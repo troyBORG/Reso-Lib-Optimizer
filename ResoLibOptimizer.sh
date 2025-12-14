@@ -25,7 +25,7 @@ git clone --depth=1 https://github.com/Yellow-Dog-Man/brotli
 cd brotli
 mkdir out && cd out
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=./installed -DCMAKE_C_FLAGS="$CMAKE_C_FLAGS -O3 -march=native" ..
-cmake --build . --config Release -j${nproc}
+cmake --build . --config Release -j$(nproc)
 
 # Replace Resonite's brotli files
 rm "${ResoDir}/brolib_x64.so"
@@ -41,7 +41,7 @@ git clone --depth=1 https://github.com/Yellow-Dog-Man/crunch
 cd crunch
 mkdir out && cd out
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="$CMAKE_C_FLAGS -O3 -march=native" -DCMAKE_CXX_FLAGS="$CMAKE_CXX_FLAGS -O3 -march=native" -DCMAKE_POLICY_VERSION_MINIMUM=3.5 .. 
-cmake --build . --config Release -j${nproc}
+cmake --build . --config Release -j$(nproc)
 
 # Replace Resonite's crunch files
 rm "${ResoDir}/libcrnlib.so"
@@ -57,7 +57,7 @@ git clone --depth=1 https://github.com/Yellow-Dog-Man/rnnoise
 cd rnnoise
 mkdir out && cd out
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="$CMAKE_C_FLAGS -O3 -march=native" .. 
-cmake --build . --config Release -j${nproc}
+cmake --build . --config Release -j$(nproc)
 
 # Replace Resonite's rnnoise files
 rm "${ResoDir}/librnnoise.so"
