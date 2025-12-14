@@ -64,3 +64,5 @@ rm "${ResoDir}/librnnoise.so"
 rm "${ResoDir}/runtimes/linux-x64/native/librnnoise.so"
 cp "/tmp/ResoLibOptimizer/rnnoise/out/librnnoise.so" "${ResoDir}/librnnoise.so"
 cp "/tmp/ResoLibOptimizer/rnnoise/out/librnnoise.so" "${ResoDir}/runtimes/linux-x64/native/librnnoise.so"
+
+rm -rf /tmp/ResoLibOptimizer
