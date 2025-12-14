@@ -25,7 +25,7 @@ git clone --depth=1 https://github.com/Yellow-Dog-Man/brotli
 cd brotli
 mkdir out && cd out
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=./installed -DCMAKE_C_FLAGS="$CMAKE_C_FLAGS -O3 -march=native" ..
-cmake --build . --config Release
+cmake --build . --config Release -j${nproc}
 
 # Replace Resonite's brotli files
 rm "${ResoDir}/brolib_x64.so"
