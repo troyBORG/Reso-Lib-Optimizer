@@ -43,8 +43,8 @@ git clone --depth=1 https://github.com/Yellow-Dog-Man/compressonator
 cd compressonator
 cmake -DOPTION_ENABLE_ALL_APPS=OFF -DOPTION_BUILD_CMP_SDK=ON -DOPTION_CMP_QT=OFF -DOPTION_BUILD_KTX2=ON -DOPTION_BUILD_EXR=ON -DOPTION_BUILD_GUI=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_C_FLAGS="-O3 -march=native" -DCMAKE_CXX_FLAGS="-O3 -march=native" .
 sed -i '33i\#include <cstdint>\' ./applications/_plugins/common/pluginbase.h
-sed -i -e 's/knl/native/g' ./build/sdk/cmp_core/CMakeLists.txt
-sed -i -e 's/knl/native/g' ./cmp_core/CMakeLists.txt
+sed -i -e 's/knl/x86-64-v4/g' ./build/sdk/cmp_core/CMakeLists.txt
+sed -i -e 's/knl/x86-64-v4/g' ./cmp_core/CMakeLists.txt
 sudo sed -i '989d' /usr/include/Imath/half.h
 CPLUS_INCLUDE_PATH=/usr/include/opencv4 cmake --build . -j$(nproc)
 sudo sed -i '989i\using half = IMATH_INTERNAL_NAMESPACE::half;\' /usr/include/Imath/half.h
