@@ -68,6 +68,20 @@ cp "/tmp/ResoLibOptimizer/Mikktspace.NET/Native/out/libmikktspace.so" "${ResoDir
 # Reset
 cd /tmp/ResoLibOptimizer
 
+# Clone and compile an optimized miniaudio
+git clone --depth=1 --recurse-submodules https://github.com/LSXPrime/SoundFlow
+cd SoundFlow/Native/miniaudio-backend
+mkdir out && cd out
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-O3 -march=native" .. 
+cmake --build . --config Release -j$(nproc)
+
+# Replace Resonite's miniaudio files
+rm "${ResoDir}/runtimes/linux-x64/native/libminiaudio.so"
+cp "/tmp/ResoLibOptimizer/SoundFlow/Native/miniaudio-backend/out/libminiaudio.so" "${ResoDir}/runtimes/linux-x64/native/libminiaudio.so"
+
+# Reset
+cd /tmp/ResoLibOptimizer
+
 # Clone and compile an optimized rrnoise
 git clone --depth=1 https://github.com/Yellow-Dog-Man/rnnoise
 cd rnnoise
