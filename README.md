@@ -18,7 +18,13 @@ Even though Resonite is written primarily in C# - which optimizes itself for you
 ### Unaffected Libraries
 - [compressonator](<https://github.com/Yellow-Dog-Man/compressonator>) - Unable to compile, should improve encode and decode speeds for non crunch compressed textures.
 - [FreeImage](<https://github.com/Yellow-Dog-Man/FreeImage>) - Unable to compile, should improve speed for image encoding, decoding, and modifications.
+- [glfw](<https://github.com/glfw/glfw>) - Purpose unknown, and it may be unused.
 - [onnxruntime](<https://github.com/microsoft/onnxruntime>) - Unable to configure, should reduce resource usage for viseme generation.
+- [phonon](<https://github.com/ValveSoftware/steam-audio>) - Purpose unknown, potentially unused.
+- [resonite-clipboard-rs](<https://github.com/Yellow-Dog-Man/resonite-clipboard-rs>) - It's for the clipboard, there's practically no benefit to optimizing this. I may do it anyway if I run out of libraries to do because it's funny or something.
+- [SDL](<https://github.com/Yellow-Dog-Man/SDL>) - SDL is no longer used.
+- [soundpipe](<https://github.com/Yellow-Dog-Man/soundpipe>) - soundpipe was never implemented and was eventually replaced with a C# library instead.
+- [SteamWorks](<https://partner.steamgames.com/doc/sdk/api>) - Purpose not fully known. Source unavailable.
 
 ## Warnings
 - The script expects the default install location for Resonite, you can change that directory at the top of the script if you installed Resonite elsewhere.
