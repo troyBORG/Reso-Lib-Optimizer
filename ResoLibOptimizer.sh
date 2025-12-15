@@ -58,7 +58,7 @@ cd /tmp/ResoLibOptimizer
 git clone --depth=1 https://github.com/Yellow-Dog-Man/Mikktspace.NET
 cd Mikktspace.NET/Native
 mkdir out && cd out
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-O3 -march=native" -DCMAKE_POLICY_VERSION_MINIMUM=3.5 .. 
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-O3 -march=native" -DCMAKE_POLICY_VERSION_MINIMUM=3.5 .. 
 cmake --build . --config Release -j$(nproc)
 
 # Replace Resonite's mikktspace files
@@ -86,7 +86,7 @@ cd /tmp/ResoLibOptimizer
 git clone --depth=1 https://github.com/Yellow-Dog-Man/rnnoise
 cd rnnoise
 mkdir out && cd out
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS=" -O3 -march=native" .. 
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-O3 -march=native" .. 
 cmake --build . --config Release -j$(nproc)
 
 # Replace Resonite's rnnoise files
