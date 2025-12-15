@@ -82,6 +82,21 @@ cp "/tmp/ResoLibOptimizer/SoundFlow/Native/miniaudio-backend/out/libminiaudio.so
 # Reset
 cd /tmp/ResoLibOptimizer
 
+# Clone and compile an optimized msdfgen
+git clone --depth=1 https://github.com/Yellow-Dog-Man/msdfgen
+cd msdfgen
+cmake -DCMAKE_BUILD_TYPE=Release -DMSDFGEN_BUILD_STANDALONE=OFF -DMSDFGEN_BUILD_SHARED_LIBRARY=ON -DCMAKE_CXX_FLAGS="-O3 -march=native" .
+cmake --build . --config Release -j$(nproc)
+
+# Replace Resonite's msdfgen files
+rm "${ResoDir}/libmsdfgen.so"
+rm "${ResoDir}/runtimes/linux-x64/native/libmsdfgen.so"
+cp "/tmp/ResoLibOptimizer/msdfgen/out/libmsdfgen.so" "${ResoDir}/libmsdfgen.so"
+cp "/tmp/ResoLibOptimizer/msdfgen/out/libmsdfgen.so" "${ResoDir}/runtimes/linux-x64/native/libmsdfgen.so"
+
+# Reset
+cd /tmp/ResoLibOptimizer
+
 # Clone and compile an optimized rrnoise
 git clone --depth=1 https://github.com/Yellow-Dog-Man/rnnoise
 cd rnnoise
