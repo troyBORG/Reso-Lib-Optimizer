@@ -97,6 +97,23 @@ cp "/tmp/ResoLibOptimizer/msdfgen/out/libmsdfgen.so" "${ResoDir}/runtimes/linux-
 # Reset
 cd /tmp/ResoLibOptimizer
 
+# Clone and compile an optimized opus
+git clone --depth=1 https://github.com/Yellow-Dog-Man/opus
+cd opus
+./autogen.sh
+mkdir out && cd out
+cmake -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-O3 -march=native" .. 
+cmake --build . --config Release -j$(nproc)
+
+# Replace Resonite's opus files
+rm "${ResoDir}/libopus.so"
+rm "${ResoDir}/runtimes/linux-x64/native/libopus.so"
+cp "/tmp/ResoLibOptimizer/opus/out/libopus.so.0.10.1" "${ResoDir}/libopus.so"
+cp "/tmp/ResoLibOptimizer/opus/out/libopus.so.0.10.1" "${ResoDir}/runtimes/linux-x64/native/libopus.so"
+
+# Reset
+cd /tmp/ResoLibOptimizer
+
 # Clone and compile an optimized rrnoise
 git clone --depth=1 https://github.com/Yellow-Dog-Man/rnnoise
 cd rnnoise
