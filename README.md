@@ -25,6 +25,7 @@ Even though Resonite is written primarily in C# - which optimizes itself for you
 - This is only tested on Arch Linux systems, there is no guarantee it will work on other distros.
 - Absolutely no checks are done for if you have the right dependancies for compiling everything, for now that is on you.
 - This has no way to undo the script, but each file is managed by Steam, so validating files will undo everything this script does
+- If you run into issues with the related libraries, first validate they are not present with the vanilla files before reporting them to Resonite directly.
 - Windows is not supported, nor do I use Windows. If you would like to submit a script for windows that replicates the Linux script, feel free to open a pull request.
 
 ## Basic Usage
