@@ -1,5 +1,5 @@
 # Reso Lib Optimizer
-This is a build script that recompiles native libraries that Resonite uses, optimized for your local system.
+This is a build script that recompiles native libraries that [Resonite](<https://resonite.com/>) uses, optimized for your local system.
 
 Even though Resonite is written primarily in C# - which optimizes itself for your system during runtime - there's still a handful of native libraries Resonite uses that are compiled generically. This isn't bad per say, but it leaves a lot of room for performance gains. That's what this script aims to achieve.
 
