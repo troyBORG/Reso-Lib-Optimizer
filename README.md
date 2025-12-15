@@ -8,6 +8,7 @@ Even though Resonite is written primarily in C# - which optimizes itself for you
 ### Affected Libraries
 - [assimp](<https://github.com/Yellow-Dog-Man/assimp>) - Improves asset importing speeds, primarily for 3D models.
 - [brotli](<https://github.com/Yellow-Dog-Man/brotli>) - Improves bson compression and decompression, which can make syncing to the cloud faster.
+- [compressonator](<https://github.com/Yellow-Dog-Man/compressonator>) - Improves BCn texture compression speed, speeding up non crunch compressed texture encoding.
 - [crunch](<https://github.com/Yellow-Dog-Man/crunch>) - Improves crunch compression speed, allowing for faster crunch compressed texture generation as well as faster loading for crunch compressed textures.
 - [mikktspace](<https://github.com/Yellow-Dog-Man/Mikktspace.NET>) - Improves mikktspace calculation speed, making tangents and blendshape tangets calculate faster.
 - [miniaudio](<https://github.com/LSXPrime/SoundFlow>) - Improves efficiency for the miniaudio backend used by SoundFlow, reducing resource usage for audio processing.
@@ -16,7 +17,6 @@ Even though Resonite is written primarily in C# - which optimizes itself for you
 - [rnnoise](<https://github.com/Yellow-Dog-Man/rnnoise>) - Improves efficiency for noise suppression, this only effects your voice.
 
 ### Unaffected Libraries
-- [compressonator](<https://github.com/Yellow-Dog-Man/compressonator>) - Unable to compile, should improve encode and decode speeds for non crunch compressed textures.
 - [FreeImage](<https://github.com/Yellow-Dog-Man/FreeImage>) - Unable to compile, should improve speed for image encoding, decoding, and modifications.
 - [glfw](<https://github.com/glfw/glfw>) - Purpose unknown, and it may be unused.
 - [onnxruntime](<https://github.com/microsoft/onnxruntime>) - Unable to configure, should reduce resource usage for viseme generation.
