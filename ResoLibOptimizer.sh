@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ResoDir="$HOME/.steam/steam/steamapps/common/Resonite"
-OptimizedFlags="-O3 -march=native"
+OptimizedFlags="-march=native -O3 -pipe -fno-semantic-interposition -flto -ffat-lto-objects"
 
 set -exuo pipefail
 
