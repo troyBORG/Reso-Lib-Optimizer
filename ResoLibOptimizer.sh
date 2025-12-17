@@ -1,8 +1,9 @@
 #!/bin/bash
 
-set -exuo pipefail
-
 ResoDir="$HOME/.steam/steam/steamapps/common/Resonite"
+OptimizedFlags="-O3 -march=native"
+
+set -exuo pipefail
 
 # Setup work dir and remove if existing
 rm -rf /tmp/ResoLibOptimizer
@@ -12,7 +13,7 @@ cd /tmp/ResoLibOptimizer
 # Clone and compile an optimized assimp
 git clone --depth=1 https://github.com/Yellow-Dog-Man/assimp
 cd assimp
-cmake CMakeLists.txt -DASSIMP_WARNINGS_AS_ERRORS=OFF -DCMAKE_C_FLAGS="-O3 -march=native" -DCMAKE_CXX_FLAGS="-O3 -march=native" 
+cmake CMakeLists.txt -DASSIMP_WARNINGS_AS_ERRORS=OFF -DCMAKE_C_FLAGS="${OptimizedFlags}" -DCMAKE_CXX_FLAGS="${OptimizedFlags}" 
 cmake --build . -j4
 
 # Replace Resonite's assimp files
@@ -26,7 +27,7 @@ cd /tmp/ResoLibOptimizer
 git clone --depth=1 https://github.com/Yellow-Dog-Man/brotli
 cd brotli
 mkdir out && cd out
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=./installed -DCMAKE_C_FLAGS=" -O3 -march=native" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=./installed -DCMAKE_C_FLAGS=" ${OptimizedFlags}" ..
 cmake --build . --config Release -j$(nproc)
 
 # Replace Resonite's brotli files
@@ -41,7 +42,7 @@ cd /tmp/ResoLibOptimizer
 # Clone and compile an optimized compressonator
 git clone --depth=1 https://github.com/Yellow-Dog-Man/compressonator
 cd compressonator
-cmake -DOPTION_ENABLE_ALL_APPS=OFF -DOPTION_BUILD_CMP_SDK=ON -DOPTION_CMP_QT=OFF -DOPTION_BUILD_KTX2=ON -DOPTION_BUILD_EXR=ON -DOPTION_BUILD_GUI=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_C_FLAGS="-O3 -march=native" -DCMAKE_CXX_FLAGS="-O3 -march=native" .
+cmake -DOPTION_ENABLE_ALL_APPS=OFF -DOPTION_BUILD_CMP_SDK=ON -DOPTION_CMP_QT=OFF -DOPTION_BUILD_KTX2=ON -DOPTION_BUILD_EXR=ON -DOPTION_BUILD_GUI=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_C_FLAGS="${OptimizedFlags}" -DCMAKE_CXX_FLAGS="${OptimizedFlags}" .
 sed -i '33i\#include <cstdint>\' ./applications/_plugins/common/pluginbase.h
 sed -i -e 's/knl/x86-64-v4/g' ./build/sdk/cmp_core/CMakeLists.txt
 sed -i -e 's/knl/x86-64-v4/g' ./cmp_core/CMakeLists.txt
@@ -67,7 +68,7 @@ cd /tmp/ResoLibOptimizer
 git clone --depth=1 https://github.com/Yellow-Dog-Man/crunch
 cd crunch
 mkdir out && cd out
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-O3 -march=native" -DCMAKE_CXX_FLAGS="-O3 -march=native" -DCMAKE_POLICY_VERSION_MINIMUM=3.5 .. 
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="${OptimizedFlags}" -DCMAKE_CXX_FLAGS="${OptimizedFlags}" -DCMAKE_POLICY_VERSION_MINIMUM=3.5 .. 
 cmake --build . --config Release -j$(nproc)
 
 # Replace Resonite's crunch files
@@ -83,7 +84,7 @@ cd /tmp/ResoLibOptimizer
 git clone --depth=1 https://github.com/Yellow-Dog-Man/Mikktspace.NET
 cd Mikktspace.NET/Native
 mkdir out && cd out
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-O3 -march=native" -DCMAKE_POLICY_VERSION_MINIMUM=3.5 .. 
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="${OptimizedFlags}" -DCMAKE_POLICY_VERSION_MINIMUM=3.5 .. 
 cmake --build . --config Release -j$(nproc)
 
 # Replace Resonite's mikktspace files
@@ -97,7 +98,7 @@ cd /tmp/ResoLibOptimizer
 git clone --depth=1 --recurse-submodules https://github.com/LSXPrime/SoundFlow
 cd SoundFlow/Native/miniaudio-backend
 mkdir out && cd out
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-O3 -march=native" .. 
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="${OptimizedFlags}" .. 
 cmake --build . --config Release -j$(nproc)
 
 # Replace Resonite's miniaudio files
@@ -110,7 +111,7 @@ cd /tmp/ResoLibOptimizer
 # Clone and compile an optimized msdfgen
 git clone --depth=1 https://github.com/Yellow-Dog-Man/msdfgen
 cd msdfgen
-cmake -DCMAKE_BUILD_TYPE=Release -DMSDFGEN_BUILD_STANDALONE=OFF -DMSDFGEN_BUILD_SHARED_LIBRARY=ON -DCMAKE_CXX_FLAGS="-O3 -march=native" .
+cmake -DCMAKE_BUILD_TYPE=Release -DMSDFGEN_BUILD_STANDALONE=OFF -DMSDFGEN_BUILD_SHARED_LIBRARY=ON -DCMAKE_CXX_FLAGS="${OptimizedFlags}" .
 cmake --build . --config Release -j$(nproc)
 
 # Replace Resonite's msdfgen files
@@ -127,7 +128,7 @@ git clone --depth=1 https://github.com/Yellow-Dog-Man/opus
 cd opus
 ./autogen.sh
 mkdir out && cd out
-cmake -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-O3 -march=native" .. 
+cmake -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="${OptimizedFlags}" .. 
 cmake --build . --config Release -j$(nproc)
 
 # Replace Resonite's opus files
@@ -143,7 +144,7 @@ cd /tmp/ResoLibOptimizer
 git clone --depth=1 https://github.com/Yellow-Dog-Man/rnnoise
 cd rnnoise
 mkdir out && cd out
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-O3 -march=native" .. 
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="${OptimizedFlags}" .. 
 cmake --build . --config Release -j$(nproc)
 
 # Replace Resonite's rnnoise files
