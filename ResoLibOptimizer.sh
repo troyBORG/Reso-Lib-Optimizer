@@ -11,6 +11,9 @@ set -exuo pipefail
 # Example: RESONITE_DIR="/path/to/Resonite" ./ResoLibOptimizer.sh
 ResoDir="${RESONITE_DIR:-$HOME/.local/share/Steam/steamapps/common/Resonite}"
 
+# Optimization flags for compilation
+OptimizedFlags="-march=native -O3 -pipe -fno-semantic-interposition -flto -ffat-lto-objects"
+
 # Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -102,7 +105,7 @@ echo ""
 echo "=== Compiling assimp ==="
 git clone --depth=1 https://github.com/Yellow-Dog-Man/assimp
 cd assimp
-cmake CMakeLists.txt -DASSIMP_WARNINGS_AS_ERRORS=OFF -DCMAKE_C_FLAGS="-O3 -march=native" -DCMAKE_CXX_FLAGS="-O3 -march=native" 
+cmake CMakeLists.txt -DASSIMP_WARNINGS_AS_ERRORS=OFF -DCMAKE_C_FLAGS="${OptimizedFlags}" -DCMAKE_CXX_FLAGS="${OptimizedFlags}" 
 cmake --build . -j4
 
 # Replace Resonite's assimp files
@@ -119,7 +122,7 @@ echo "=== Compiling brotli ==="
 git clone --depth=1 https://github.com/Yellow-Dog-Man/brotli
 cd brotli
 mkdir out && cd out
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=./installed -DCMAKE_C_FLAGS=" -O3 -march=native" ..
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=./installed -DCMAKE_C_FLAGS=" ${OptimizedFlags}" ..
 cmake --build . --config Release -j$(nproc)
 
 # Replace Resonite's brotli files
@@ -158,7 +161,7 @@ fi
 # Disable EXR support due to type conflict between CUDA's half typedef and compressonator's half class
 # EXR would require source code patches to resolve the conflict
 # Note: All BCn texture formats (BC1-BC7) still work without EXR
-cmake -DOPTION_ENABLE_ALL_APPS=OFF -DOPTION_BUILD_CMP_SDK=ON -DOPTION_CMP_QT=OFF -DOPTION_BUILD_KTX2=ON -DOPTION_BUILD_EXR=OFF -DOPTION_BUILD_GUI=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_C_FLAGS="-O3 -march=native" -DCMAKE_CXX_FLAGS="-O3 -march=native" .
+cmake -DOPTION_ENABLE_ALL_APPS=OFF -DOPTION_BUILD_CMP_SDK=ON -DOPTION_CMP_QT=OFF -DOPTION_BUILD_KTX2=ON -DOPTION_BUILD_EXR=OFF -DOPTION_BUILD_GUI=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_C_FLAGS="${OptimizedFlags}" -DCMAKE_CXX_FLAGS="${OptimizedFlags}" .
 
 # Remove AVX512 target from CMakeLists.txt only if CPU doesn't support it
 # Upstream has hardcoded AVX512 testing, so we need to remove it for non-AVX512 CPUs
@@ -217,7 +220,7 @@ echo "=== Compiling crunch ==="
 git clone --depth=1 https://github.com/Yellow-Dog-Man/crunch
 cd crunch
 mkdir out && cd out
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-O3 -march=native" -DCMAKE_CXX_FLAGS="-O3 -march=native" -DCMAKE_POLICY_VERSION_MINIMUM=3.5 .. 
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="${OptimizedFlags}" -DCMAKE_CXX_FLAGS="${OptimizedFlags}" -DCMAKE_POLICY_VERSION_MINIMUM=3.5 .. 
 cmake --build . --config Release -j$(nproc)
 
 # Replace Resonite's crunch files
@@ -236,7 +239,7 @@ echo "=== Compiling mikktspace ==="
 git clone --depth=1 https://github.com/Yellow-Dog-Man/Mikktspace.NET
 cd Mikktspace.NET/Native
 mkdir out && cd out
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-O3 -march=native" -DCMAKE_POLICY_VERSION_MINIMUM=3.5 .. 
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="${OptimizedFlags}" -DCMAKE_POLICY_VERSION_MINIMUM=3.5 .. 
 cmake --build . --config Release -j$(nproc)
 
 # Replace Resonite's mikktspace files
@@ -253,7 +256,7 @@ echo "=== Compiling miniaudio ==="
 git clone --depth=1 --recurse-submodules https://github.com/LSXPrime/SoundFlow
 cd SoundFlow/Native/miniaudio-backend
 mkdir out && cd out
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-O3 -march=native" .. 
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="${OptimizedFlags}" .. 
 cmake --build . --config Release -j$(nproc)
 
 # Replace Resonite's miniaudio files
@@ -269,7 +272,7 @@ echo ""
 echo "=== Compiling msdfgen ==="
 git clone --depth=1 https://github.com/Yellow-Dog-Man/msdfgen
 cd msdfgen
-cmake -DCMAKE_BUILD_TYPE=Release -DMSDFGEN_BUILD_STANDALONE=OFF -DMSDFGEN_BUILD_SHARED_LIBRARY=ON -DCMAKE_CXX_FLAGS="-O3 -march=native" .
+cmake -DCMAKE_BUILD_TYPE=Release -DMSDFGEN_BUILD_STANDALONE=OFF -DMSDFGEN_BUILD_SHARED_LIBRARY=ON -DCMAKE_CXX_FLAGS="${OptimizedFlags}" .
 cmake --build . --config Release -j$(nproc)
 
 # Replace Resonite's msdfgen files
@@ -289,7 +292,7 @@ git clone --depth=1 https://github.com/Yellow-Dog-Man/opus
 cd opus
 ./autogen.sh
 mkdir out && cd out
-cmake -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-O3 -march=native" .. 
+cmake -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="${OptimizedFlags}" .. 
 cmake --build . --config Release -j$(nproc)
 
 # Replace Resonite's opus files
@@ -308,7 +311,7 @@ echo "=== Compiling rnnoise ==="
 git clone --depth=1 https://github.com/Yellow-Dog-Man/rnnoise
 cd rnnoise
 mkdir out && cd out
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-O3 -march=native" .. 
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="${OptimizedFlags}" .. 
 cmake --build . --config Release -j$(nproc)
 
 # Replace Resonite's rnnoise files
