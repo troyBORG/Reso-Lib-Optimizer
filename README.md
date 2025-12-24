@@ -42,7 +42,7 @@ Even though Resonite is written primarily in C# - which optimizes itself for you
 
 ## Basic Usage
 ```bash
-git clone --depth=1 https://github.com/Raidriar796/Reso-Lib-Optimizer
+git clone --depth=1 https://github.com/troyBORG/Reso-Lib-Optimizer
 cd Reso-Lib-Optimizer
 chmod +x ResoLibOptimizer.sh
 ./ResoLibOptimizer.sh
