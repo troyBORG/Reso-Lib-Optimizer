@@ -106,7 +106,7 @@ echo "=== Compiling assimp ==="
 git clone --depth=1 https://github.com/Yellow-Dog-Man/assimp
 cd assimp
 cmake CMakeLists.txt -DASSIMP_WARNINGS_AS_ERRORS=OFF -DCMAKE_C_FLAGS="${OptimizedFlags}" -DCMAKE_CXX_FLAGS="${OptimizedFlags}" 
-cmake --build . -j4
+cmake --build . -j$(nproc)
 
 # Replace Resonite's assimp files
 rm "${ResoDir}/runtimes/linux-x64/native/libassimp.so"
@@ -128,8 +128,8 @@ cmake --build . --config Release -j$(nproc)
 # Replace Resonite's brotli files
 rm "${ResoDir}/brolib_x64.so"
 rm "${ResoDir}/runtimes/linux/native/brolib_x64.so"
-cp "${WORK_DIR}/brotli/out/libbrolib.so" "${ResoDir}/brolib_x64.so"
 cp "${WORK_DIR}/brotli/out/libbrolib.so" "${ResoDir}/runtimes/linux/native/brolib_x64.so"
+ln "${ResoDir}/runtimes/linux/native/brolib_x64.so" "${ResoDir}/brolib_x64.so"
 success "brotli compiled and installed"
 
 # Reset
@@ -205,10 +205,10 @@ rm "${ResoDir}/libCMP_Compressonator.so"
 rm "${ResoDir}/libCMP_Framework.so"
 rm "${ResoDir}/runtimes/linux-x64/native/libCMP_Compressonator.so"
 rm "${ResoDir}/runtimes/linux-x64/native/libCMP_Framework.so"
-cp "${WORK_DIR}/compressonator/lib/libCMP_Compressonator.so" "${ResoDir}/libCMP_Compressonator.so"
-cp "${WORK_DIR}/compressonator/lib/libCMP_Framework.so" "${ResoDir}/libCMP_Framework.so"
 cp "${WORK_DIR}/compressonator/lib/libCMP_Compressonator.so" "${ResoDir}/runtimes/linux-x64/native/libCMP_Compressonator.so"
 cp "${WORK_DIR}/compressonator/lib/libCMP_Framework.so" "${ResoDir}/runtimes/linux-x64/native/libCMP_Framework.so"
+ln "${ResoDir}/runtimes/linux-x64/native/libCMP_Compressonator.so" "${ResoDir}/libCMP_Compressonator.so"
+ln "${ResoDir}/runtimes/linux-x64/native/libCMP_Framework.so" "${ResoDir}/libCMP_Framework.so"
 success "compressonator compiled and installed"
 
 # Reset
@@ -226,9 +226,35 @@ cmake --build . --config Release -j$(nproc)
 # Replace Resonite's crunch files
 rm "${ResoDir}/libcrnlib.so"
 rm "${ResoDir}/runtimes/linux-x64/native/libcrnlib.so"
-cp "${WORK_DIR}/crunch/out/libcrnlib.so" "${ResoDir}/libcrnlib.so"
 cp "${WORK_DIR}/crunch/out/libcrnlib.so" "${ResoDir}/runtimes/linux-x64/native/libcrnlib.so"
+ln "${ResoDir}/runtimes/linux-x64/native/libcrnlib.so" "${ResoDir}/libcrnlib.so"
 success "crunch compiled and installed"
+
+# Reset
+cd "$WORK_DIR"
+
+# Clone and compile an optimized FreeImage
+echo ""
+echo "=== Compiling FreeImage ==="
+git clone https://github.com/Yellow-Dog-Man/FreeImage
+cd FreeImage
+git fetch origin pull/21/head:EncodingTweaks
+git fetch origin pull/23/head:compilation-fixes
+git switch EncodingTweaks
+git rebase compilation-fixes
+git rebase main
+make all CFLAGS="-w -fPIC -fexceptions -fvisibility=hidden -D__ANSI__ -I. -ISource -ISource/Metadata -ISource/FreeImageToolkit -ISource/LibJPEG -ISource/LibPNG -ISource/LibTIFF4 -ISource/ZLib -ISource/LibOpenJPEG -ISource/OpenEXR -ISource/OpenEXR/Half -ISource/OpenEXR/Iex -ISource/OpenEXR/IlmImf -ISource/OpenEXR/IlmThread -ISource/OpenEXR/Imath -ISource/OpenEXR/IexMath -ISource/LibRawLite -ISource/LibRawLite/dcraw -ISource/LibRawLite/internal -ISource/LibRawLite/libraw -ISource/LibRawLite/src -ISource/LibWebP -ISource/LibJXR -ISource/LibJXR/common/include -ISource/LibJXR/image/sys -ISource/LibJXR/jxrgluelib -fPIC ${OptimizedFlags}" CXXFLAGS="-w -fPIC -fexceptions -fvisibility=hidden -Wno-ctor-dtor-privacy -std=c++11 -D__ANSI__ -I. -ISource -ISource/Metadata -ISource/FreeImageToolkit -ISource/LibJPEG -ISource/LibPNG -ISource/LibTIFF4 -ISource/ZLib -ISource/LibOpenJPEG -ISource/OpenEXR -ISource/OpenEXR/Half -ISource/OpenEXR/Iex -ISource/OpenEXR/IlmImf -ISource/OpenEXR/IlmThread -ISource/OpenEXR/Imath -ISource/OpenEXR/IexMath -ISource/LibRawLite -ISource/LibRawLite/dcraw -ISource/LibRawLite/internal -ISource/LibRawLite/libraw -ISource/LibRawLite/src -ISource/LibWebP -ISource/LibJXR -ISource/LibJXR/common/include -ISource/LibJXR/image/sys -ISource/LibJXR/jxrgluelib -fPIC ${OptimizedFlags}" -j$(nproc)
+
+# Replace Resonite's FreeImage files
+rm "${ResoDir}/libFreeImage.so"
+rm "${ResoDir}/runtimes/linux-x64/native/FreeImage.h"
+rm "${ResoDir}/runtimes/linux-x64/native/libFreeImage.a"
+rm "${ResoDir}/runtimes/linux-x64/native/libFreeImage.so"
+cp -r "${WORK_DIR}/FreeImage/Dist/FreeImage.h" "${ResoDir}/runtimes/linux-x64/native/"
+cp -r "${WORK_DIR}/FreeImage/Dist/libFreeImage.a" "${ResoDir}/runtimes/linux-x64/native/"
+cp -r "${WORK_DIR}/FreeImage/Dist/libFreeImage.so" "${ResoDir}/runtimes/linux-x64/native/"
+ln "${ResoDir}/runtimes/linux-x64/native/libFreeImage.so" "${ResoDir}/libFreeImage.so"
+success "FreeImage compiled and installed"
 
 # Reset
 cd "$WORK_DIR"
@@ -278,8 +304,8 @@ cmake --build . --config Release -j$(nproc)
 # Replace Resonite's msdfgen files
 rm "${ResoDir}/libmsdfgen.so"
 rm "${ResoDir}/runtimes/linux-x64/native/libmsdfgen.so"
-cp "${WORK_DIR}/msdfgen/out/libmsdfgen.so" "${ResoDir}/libmsdfgen.so"
 cp "${WORK_DIR}/msdfgen/out/libmsdfgen.so" "${ResoDir}/runtimes/linux-x64/native/libmsdfgen.so"
+ln "${ResoDir}/runtimes/linux-x64/native/libmsdfgen.so" "${ResoDir}/libmsdfgen.so"
 success "msdfgen compiled and installed"
 
 # Reset
@@ -298,8 +324,8 @@ cmake --build . --config Release -j$(nproc)
 # Replace Resonite's opus files
 rm "${ResoDir}/libopus.so"
 rm "${ResoDir}/runtimes/linux-x64/native/libopus.so"
-cp "${WORK_DIR}/opus/out/libopus.so.0.10.1" "${ResoDir}/libopus.so"
 cp "${WORK_DIR}/opus/out/libopus.so.0.10.1" "${ResoDir}/runtimes/linux-x64/native/libopus.so"
+ln "${ResoDir}/runtimes/linux-x64/native/libopus.so" "${ResoDir}/libopus.so"
 success "opus compiled and installed"
 
 # Reset
@@ -317,8 +343,8 @@ cmake --build . --config Release -j$(nproc)
 # Replace Resonite's rnnoise files
 rm "${ResoDir}/librnnoise.so"
 rm "${ResoDir}/runtimes/linux-x64/native/librnnoise.so"
-cp "${WORK_DIR}/rnnoise/out/librnnoise.so" "${ResoDir}/librnnoise.so"
 cp "${WORK_DIR}/rnnoise/out/librnnoise.so" "${ResoDir}/runtimes/linux-x64/native/librnnoise.so"
+ln "${ResoDir}/runtimes/linux-x64/native/librnnoise.so" "${ResoDir}/librnnoise.so"
 success "rnnoise compiled and installed"
 
 # Verify all installations
@@ -338,6 +364,10 @@ libraries=(
     "${ResoDir}/runtimes/linux-x64/native/libCMP_Framework.so:compressonator framework (runtime)"
     "${ResoDir}/libcrnlib.so:crunch"
     "${ResoDir}/runtimes/linux-x64/native/libcrnlib.so:crunch (runtime)"
+    "${ResoDir}/libFreeImage.so:FreeImage"
+    "${ResoDir}/runtimes/linux-x64/native/libFreeImage.so:FreeImage (runtime)"
+    "${ResoDir}/runtimes/linux-x64/native/libFreeImage.a:FreeImage (static)"
+    "${ResoDir}/runtimes/linux-x64/native/FreeImage.h:FreeImage (header)"
     "${ResoDir}/runtimes/linux-x64/native/libmikktspace.so:mikktspace"
     "${ResoDir}/runtimes/linux-x64/native/libminiaudio.so:miniaudio"
     "${ResoDir}/libmsdfgen.so:msdfgen"
@@ -365,7 +395,7 @@ if [ "$all_installed" = true ]; then
     success "All libraries verified and installed correctly!"
     echo ""
     echo "Summary:"
-    echo "  • 9 libraries optimized and installed"
+    echo "  • 10 libraries optimized and installed"
     echo "  • All files verified in Resonite directory"
     echo "  • Ready to use!"
 else
