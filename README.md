@@ -27,20 +27,37 @@ Even though Resonite is written primarily in C# - which optimizes itself for you
 - [SteamWorks](<https://partner.steamgames.com/doc/sdk/api>) - Used for steam integration. Source unavailable.
 
 ## Warnings
-- The script expects the default install location for Resonite, you can change that directory at the top of the script if you installed Resonite elsewhere.
+- The script expects the default install location for Resonite (`~/.local/share/Steam/steamapps/common/Resonite`), but you can override this by setting the `RESONITE_DIR` environment variable:
+  ```bash
+  export RESONITE_DIR="/path/to/Resonite"
+  ./ResoLibOptimizer.sh
+  ```
 - This is only tested on Arch Linux systems, there is no guarantee it will work on other distros.
-- Absolutely no checks are done for if you have the right dependancies for compiling everything, for now that is on you.
+- The script will check for required dependencies (git, cmake, gcc, g++, make) and provide installation instructions if any are missing.
 - This has no way to undo the script, but each file is managed by Steam, so validating files will undo everything this script does.
 - If the script fails or is cancelled while compiling compressonator and do not get a successful compilation of compressonator afterwards, you may need to reinstall imath.
+- The script automatically detects AVX512 support and will only build AVX512 optimizations if your CPU supports them.
 - If you run into issues with the related libraries, first validate they are not present with the vanilla files before reporting them to Resonite directly.
 - Windows is not supported, nor do I use Windows. If you would like to submit a script for windows that replicates the Linux script, feel free to open a pull request.
 
 ## Basic Usage
-```
+```bash
 git clone --depth=1 https://github.com/Raidriar796/Reso-Lib-Optimizer
 cd Reso-Lib-Optimizer
 chmod +x ResoLibOptimizer.sh
 ./ResoLibOptimizer.sh
+```
+
+### Custom Resonite Installation Path
+If Resonite is installed in a non-standard location, you can specify it using an environment variable:
+```bash
+export RESONITE_DIR="/path/to/Resonite"
+./ResoLibOptimizer.sh
+```
+
+Or in a single command:
+```bash
+RESONITE_DIR="/path/to/Resonite" ./ResoLibOptimizer.sh
 ```
 
 ## Alternatives
